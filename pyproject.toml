@@ -1,0 +1,37 @@
+[project]
+name = "fastapi-template" # rename
+version = "0.1.0" # set as low as possible, bump it up!
+description = "build a high-quality FastAPI endpoint instantly!"
+readme = "README.md"
+license = "UNLICENSE" # maximally permissive for the template, change if you need!
+authors = [{name = "Your Name Here", email="Your Email here"}]
+requires-python = ">=3.12" # update this as desired
+dependencies = [
+  "fastapi", # API
+  "fasthx", # UI (HTMX)
+  "jinja2", # templating
+  "pydantic>2", # Data validation
+]
+
+[project.optional-dependencies]
+cli = [
+  "fire", # CLI maker
+# "click", # alternative CLI maker
+]
+dev = [
+  "ruff", # code linter/formatter
+  "wily", # maintainability metrics
+  "mypy" # type checking
+]
+prod = ["uvicorn"] # production quality server
+testing = ["hypothesis"]
+
+#[project.scripts]
+#templatecli = "template.main:cli" # rename this
+
+#[tool.setuptools]
+#packages = ["fastapi-template"]  # rename to your package
+
+[build-system]
+requires = ["setuptools"] # Or your preferred build backend
+build-backend = "setuptools.build_meta" # Or your preferred build backend
