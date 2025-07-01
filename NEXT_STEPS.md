@@ -8,4 +8,6 @@
 - update pyproject.toml
     - new dependencies
 
+- rename projectname/ folder
+
 
