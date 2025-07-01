@@ -10,13 +10,20 @@ macros, github actions, and anything else you need.
 
 Thats this repo: fork and get up and running NOW!
 
+WARNING: this is highly subjective. 
+The things in this repo are the thing that *I* add to new projects.
+You may not want everything in here, or want things not in here.
+It's easier to delete what you dont need than to hunt down everything,
+so this is a bit of a kitchen sink situation.
+If it doesnt fit your needs: fork it, make your own template!
+
 (because this is a template that may have to last years,
 version pinning is a MUST! These versions are from when the template was built,
 they may be out of date, you may need updates. If you do,
 I cannot promise that the new versions of all these packages are compatible,
 update at your own risk!)
 
-## Tech stack
+## API
 - FastAPI
 - Pydantic
 - Jinja
@@ -35,6 +42,8 @@ Python:
 - ruff (code-quality)
 - wily (maintainability)
 - mypy (type-checking)
+
+Docker
 
 ### Testing
 - hypothesis (property-based testing)
