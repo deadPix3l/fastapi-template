@@ -39,9 +39,6 @@ Python:
 ### Testing
 - hypothesis (property-based testing)
 
-### Build Tools
-- poetry
-
 ### Other optionals
 - fire (super easy CLI generator)
 - click (alternative CLI generator)
