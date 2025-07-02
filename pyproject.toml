@@ -4,7 +4,7 @@ version = "0.1.0" # set as low as possible, bump it up!
 description = "build a high-quality FastAPI endpoint instantly!"
 readme = "README.md"
 license = "UNLICENSE" # maximally permissive for the template, change if you need!
-authors = [{name = "Your Name Here", email="Your Email here"}]
+authors = [{name = "Your Name Here", email="you@email.com"}]
 requires-python = ">=3.12" # update this as desired
 dependencies = [
   "fastapi", # API
