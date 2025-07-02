@@ -1,0 +1,14 @@
+on:
+  push:
+    branches: master
+    paths-ignore:
+      - ".github/**"
+
+  workflow_dispatch:
+
+jobs:
+  ruff:
+    uses: ./.github/workflows/ruff.yml
+  wily:
+    uses: ./.github/workflows/wily.yml
+

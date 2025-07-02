@@ -1,0 +1,28 @@
+on:
+  workflow_call:
+
+jobs:
+  badge-setup:
+    runs-on: ubuntu-latest
+    name: Setup badges dir
+    outputs:
+      branch: ${{ steps.extract_branch.outputs.branch }}
+      path: ${{ steps.badge_dir.outputs.path }}
+
+    steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_REF#refs/heads/}" >> "${GITHUB_OUTPUT}"
+        id: extract_branch
+
+      - uses: actions/checkout@v4
+        with:
+          ref: badges
+
+      - name: Create destination directory
+        id: badge_dir
+        env:
+          BADGE_PATH: ${{ steps.extract_branch.outputs.branch }}
+        run: |
+          echo "path=${BADGE_PATH%/*}" >> "${GITHUB_OUTPUT}"
+          mkdir -p "${BADGE_PATH%/*}"

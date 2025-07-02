@@ -1,0 +1,25 @@
+on:
+  workflow_call:
+
+jobs:
+  wily:
+    runs-on: ubuntu-latest
+    outputs:
+      value: ${{ steps.wily-rank.outputs.value }}
+    steps:
+
+      - uses: actions/checkout@v4
+      - run: pip install wily
+      - run: wily clean
+      - run: wily build .
+      - name: Run wily
+        id: wily-rank
+        run: echo "value=$(wily rank | tail -n2 | head -n1 | rev | cut -d " " -f2 | rev)" >> "$GITHUB_OUTPUT"
+
+      - uses: ./.github/actions/create-badge
+        with:
+          label: Wily
+          status: ${{steps.wily-rank.outputs.value}}%
+          color: 'green'
+          filename: wily.svg
+

@@ -1,0 +1,79 @@
+name: Create Badge
+description: "create a badge, upload as artifact, and commit it"
+inputs:
+  branch:
+    description: "The branch to commit badge to"
+    default: badges
+  commit_msg:
+    description: "commit message"
+    default: "commit badge"
+  label:
+    description: "left side of badge"
+    required: true
+  status:
+    description: "right side of badge"
+    required: true
+  color:
+    description: "color of right side"
+    default: "blue"
+  filename:
+    description: "name of file to commit"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Extract branch name
+      id: extract_branch
+      shell: bash
+      run: echo "branch=${GITHUB_REF#refs/heads/}" >> "${GITHUB_OUTPUT}"
+
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.branch }}
+
+    - name: Create destination directory
+      env:
+        BADGE_PATH: ${{ inputs.branch }}
+      run: mkdir -p "${BADGE_PATH%/*}"
+      shell: bash
+
+
+    - name: Generate badge
+      uses: emibcn/badge-action@v2.0.3
+      id: generate-badge
+      with:
+        label: ${{ inputs.label }}
+        status: ${{ inputs.status }}
+        color: ${{ inputs.color }}
+        path: ${{ steps.extract_branch.outputs.branch }}/${{ inputs.filename }}
+
+    - name: Upload a Badge as Artifact
+      uses: actions/upload-artifact@v4.6.2
+      with:
+        name: ${{ inputs.filename }}-badge
+        path: ${{ steps.extract_branch.outputs.branch }}/${{ inputs.filename }}
+        overwrite: true
+        if-no-files-found: warn
+
+    - name: Commit badge
+      shell: bash
+      continue-on-error: true
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git status
+        git add "${{ steps.extract_branch.outputs.branch }}/"
+        git commit -m "${{ inputs.commit_msg }}"
+
+    - name: Push badge commit
+      uses: ad-m/github-push-action@master
+      if: ${{ success() }}
+      with:
+        github_token: ${{ github.token }}
+        branch: ${{ inputs.branch }}
+
+    # required: recheckout master (if you dont, the post-run fails because it cannot find the workflow file. weird)
+    - uses: actions/checkout@v4
+
+

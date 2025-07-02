@@ -1,0 +1,23 @@
+on:
+  workflow_call:
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    outputs:
+      total: ${{ steps.ruff.outputs.total}}
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: pip install ruff
+
+      - id: ruff
+        run: echo "total=$(ruff check | tail | awk '/Found/ {print $2}')" >> "${GITHUB_OUTPUT}"
+
+      - uses: ./.github/actions/create-badge
+        with:
+          label: Ruff
+          status: ${{steps.ruff.outputs.total}} errors
+          color: 'orange'
+          filename: ruff.svg
+

@@ -1,0 +1,66 @@
+name: Build Container and Push
+on:
+  push:
+    branches: master
+    paths:
+      - 'tools/**.py'
+      - 'tools/config/*.yml'
+      - 'Dockerfile'
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+
+  build_and_push:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Login to GHCR.io Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{github.repository_owner}}
+          password: ${{github.token}}
+
+      # ghcr requires lowercase
+      - name: Lowercase owner and repo name 
+        run: echo "REPO=${GITHUB_REPOSITORY@L}" >> "${GITHUB_ENV}"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v6.13.0
+        with:
+          push: true
+          tags: ghcr.io/${{env.REPO}}:latest
+
+      - name: Send custom event details to a Slack workflow
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: webhook-trigger
+          payload: |
+            status: "${{ job.status }}"
+            repo-url:   "${{ github.repositoryUrl }}"
+            ref:    "${{ github.ref_name }}"
+            commit: "${{ github.sha }}"
+
+  deploy:
+    needs: build_and_push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub App Installation Token
+        id: installationToken
+        uses: jnwng/github-app-installation-token-action@v2
+        with: 
+          appId: 1141754
+          installationId: 60903780
+          privateKey: ${{ secrets.APP_PRIVATE_KEY }}
+        
+      - name: Trigger Deploy
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ steps.installationToken.outputs.token }}
+          repository: CyborgSecurity/SCALEui
+          event-type: trigger-deploy
