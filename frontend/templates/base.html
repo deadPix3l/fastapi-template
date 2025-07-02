@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Your App Name{% endblock%}</title>
+    <!-- consider not using CDNs -->
+  <link rel="stylesheet" href="/assets/tailwind.css" />
+
+  <!-- font-awesome pro (TODO: download these)-->
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.2/css/all.css" >
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.2/css/sharp-solid.css" >
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.2/css/sharp-regular.css" >
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.2/css/sharp-light.css" >
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.2/css/duotone.css" />
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.7.2/css/brands.css" />
+
+  <script src="/assets/htmx.min.js"></script>
+  <script src="/assets/alpine.min.js"></script>
+  <script src="/assets/_hyperscript.min.js"></script>
+
+  {% block imports %}{% endblock %}
+
+</head>
+<body>
+    {% block sidebar %}
+    {% include "components/sidebar.html" %} 
+    {% endblock %}
+    
+    <div class="sm:ml-96">
+    {% block content %}
+      <div id="content-area" class="empty:hidden w-full p-2 m-2 overflow-auto"></div>
+    {% endblock %}
+    </div>
+</body>
+</html>
+

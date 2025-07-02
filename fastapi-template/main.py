@@ -2,7 +2,6 @@
 #from typing import Annotated
 
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
 # HTMX support for UI
