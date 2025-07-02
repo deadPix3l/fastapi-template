@@ -2,6 +2,13 @@
 
 https://www.conventionalcommits.org/en/v1.0.0
 
+# Library Docs
+https://htmx.org/
+https://alpinejs.dev/
+https://hyperscript.org/
+https://www.starlette.io/
+https://fastapi.tiangolo.com/
+https://jinja.palletsprojects.com/en/stable/
 
 # UI tools
 

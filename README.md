@@ -52,3 +52,8 @@ Docker
 - fire (super easy CLI generator)
 - click (alternative CLI generator)
 
+### Information
+There is also a bunch of references and links
+in various MarkDown files which will hopefully provide value
+and make development easier.
+
