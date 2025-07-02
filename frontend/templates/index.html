@@ -1,0 +1,9 @@
+<!-- example lifted from _hyperscript.org because of how great it is -->
+<button class="crowded padding padding-block allcaps" _="on pointerdown
+              repeat until event pointerup from the document
+                set rand to Math.random() * 360
+                transition *background-color
+                        to `hsl($rand 100% 90%)`
+                      over 250ms
+              end
+              transition *background-color to initial">Try me: press and hold</button>
